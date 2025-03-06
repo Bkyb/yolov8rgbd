@@ -74,6 +74,7 @@ from .conv import (
     LightConv,
     RepConv,
     SpatialAttention,
+    SilenceChannel,
 )
 from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect
 from .transformer import (
@@ -88,6 +89,8 @@ from .transformer import (
     TransformerEncoderLayer,
     TransformerLayer,
 )
+from .gif import Gif
+
 
 __all__ = (
     "Conv",
@@ -162,4 +165,6 @@ __all__ = (
     "TorchVision",
     "Index",
     "A2C2f",
+    "SilenceChannel"
+    "Gif"
 )
