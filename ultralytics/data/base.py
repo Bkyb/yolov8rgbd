@@ -163,7 +163,7 @@ class BaseDataset(Dataset):
             else:  # read image
                 if use_rgbd: # here i changed
                     im_brg = cv2.imread(f)  # BGR
-                    im_depth = cv2.imread(f.replace('rgb', 'depth'), cv2.IMREAD_GRAYSCALE)
+                    im_depth = cv2.imread(f.replace('images', 'depth'), cv2.IMREAD_GRAYSCALE)
                     b, g, r = cv2.split(im_brg)
                     im = cv2.merge((b, g, r, im_depth))
                 else:
