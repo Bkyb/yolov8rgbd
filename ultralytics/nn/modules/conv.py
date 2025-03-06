@@ -22,6 +22,7 @@ __all__ = (
     "Concat",
     "RepConv",
     "Index",
+    "SilenceChannel",
 )
 
 
@@ -348,3 +349,11 @@ class Index(nn.Module):
         Expects a list of tensors as input.
         """
         return x[self.index]
+        
+class SilenceChannel(nn.Module):
+    def __init__(self,c_start, c_end):
+        super(SilenceChannel, self).__init__()
+        self.c_start=c_start
+        self.c_end = c_end
+    def forward(self, x):
+        return x[...,self.c_start:self.c_end, :,:]
