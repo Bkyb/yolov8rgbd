@@ -424,7 +424,7 @@ class LoadImagesAndVideos:
                 else:
                     if use_rgbd: # here i changed
                         im_brg = cv2.imread(path)  # BGR
-                        im_depth = cv2.imread(path.replace('rgb', 'depth'), cv2.IMREAD_GRAYSCALE)
+                        im_depth = cv2.imread(path.replace('images', 'depth'), cv2.IMREAD_GRAYSCALE)
                         b, g, r = cv2.split(im_brg)
                         im = cv2.merge((b, g, r, im_depth))
                     else:
