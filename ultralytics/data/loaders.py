@@ -420,15 +420,9 @@ class LoadImagesAndVideos:
 
                     register_heif_opener()  # Register HEIF opener with Pillow
                     with Image.open(path) as img:
-                        im0 = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)  # convert image to BGR nparray
-                else:
-                    if use_rgbd: # here i changed
-                        im_brg = cv2.imread(path)  # BGR
-                        im_depth = cv2.imread(path.replace('images', 'depth'), cv2.IMREAD_GRAYSCALE)
-                        b, g, r = cv2.split(im_brg)
-                        im = cv2.merge((b, g, r, im_depth))
-                    else:
-                        im = cv2.imread(path, cv2.IMREAD_UNCHANGED)  # BGR
+                        im0 = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGBA2BGRA)  # convert image to BGR nparray
+                else:      
+                    im = cv2.imread(path, cv2.IMREAD_UNCHANGED)  # BGR
                 if im0 is None:
                     LOGGER.warning(f"WARNING ⚠️ Image Read Error {path}")
                 else:
