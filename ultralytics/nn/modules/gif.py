@@ -9,9 +9,9 @@ class Gif(nn.Module):
         super(Gif, self).__init__()
         # 두 특징 맵을 concat하니까 채널 크기가 2배				
         # FG를 계산할 때 사용되는 3x3x1 컨볼루션 레이어
-        self.conv_w1 = nn.Conv2d(channels, 1, kernel_size=3, padding=1).to(FG.device)
-        self.conv_w2 = nn.Conv2d(channels, 1, kernel_size=3, padding=1).to(FG.device)
-        self.conv_fusion = nn.Conv2d(channels, channels, kernel_size=1).to(FG.device)
+        self.conv_w1 = nn.Conv2d(channels, 1, kernel_size=3, padding=1)
+        self.conv_w2 = nn.Conv2d(channels, 1, kernel_size=3, padding=1)
+        self.conv_fusion = nn.Conv2d(channels, channels, kernel_size=1)
             
     def forward(self, x):
         # 먼저 FG를 계산하자
