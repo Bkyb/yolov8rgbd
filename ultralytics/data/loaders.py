@@ -372,7 +372,7 @@ class LoadImagesAndVideos:
     def __next__(self):
         """Returns the next batch of images or video frames with their paths and metadata."""
         paths, imgs, info = [], [], []
-        use_rgbd = True # changing here
+        use_rgbd = False # changing here
         while len(imgs) < self.bs:
             if self.count >= self.nf:  # end of file list
                 if imgs:
@@ -428,7 +428,7 @@ class LoadImagesAndVideos:
                         b, g, r = cv2.split(im_brg)
                         im = cv2.merge((b, g, r, im_depth))
                     else:
-                        im = cv2.imread(path)  # BGR
+                        im = cv2.imread(path, cv2.IMREAD_UNCHANGED)  # BGR
                 if im0 is None:
                     LOGGER.warning(f"WARNING ⚠️ Image Read Error {path}")
                 else:
