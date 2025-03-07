@@ -405,7 +405,7 @@ class OBBModel(DetectionModel):
 class SegmentationModel(DetectionModel):
     """YOLO segmentation model."""
 
-    def __init__(self, cfg="yolo11n-seg.yaml", ch=3, nc=None, verbose=True):
+    def __init__(self, cfg="yolo11n-seg.yaml", ch=4, nc=None, verbose=True):
         """Initialize YOLOv8 segmentation model with given config and parameters."""
         super().__init__(cfg=cfg, ch=ch, nc=nc, verbose=verbose)
 
@@ -417,7 +417,7 @@ class SegmentationModel(DetectionModel):
 class PoseModel(DetectionModel):
     """YOLO pose model."""
 
-    def __init__(self, cfg="yolo11n-pose.yaml", ch=3, nc=None, data_kpt_shape=(None, None), verbose=True):
+    def __init__(self, cfg="yolo11n-pose.yaml", ch=4, nc=None, data_kpt_shape=(None, None), verbose=True):
         """Initialize YOLOv8 Pose model."""
         if not isinstance(cfg, dict):
             cfg = yaml_model_load(cfg)  # load model YAML
