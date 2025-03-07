@@ -1079,7 +1079,7 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             c1 = ch[f]
             args = [*args[1:]]
         elif m is Gif:
-            c2 = sum(ch[x] for x in f)
+            args = [ch[f]]
         elif m is SilenceChannel:
             c2 = args[1] - args[0]
         else:
