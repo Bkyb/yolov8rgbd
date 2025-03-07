@@ -174,7 +174,7 @@ def crop_and_save(anno, windows, window_objs, im_dir, lb_dir, allow_background_i
                     - train
                     - val
     """
-    im = cv2.imread(anno["filepath"])
+    im = cv2.imread(anno["filepath"], cv2.IMREAD_UNCHANGED)
     name = Path(anno["filepath"]).stem
     for i, window in enumerate(windows):
         x_start, y_start, x_stop, y_stop = window.tolist()
