@@ -51,7 +51,7 @@ class BaseDataset(Dataset):
         img_path,
         imgsz=640,
         cache=False,
-        augment=True,
+        augment=False,
         hyp=DEFAULT_CFG,
         prefix="",
         rect=False,
