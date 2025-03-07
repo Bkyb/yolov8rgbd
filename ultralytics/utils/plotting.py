@@ -1100,7 +1100,8 @@ def plot_images(
     for i in range(bs):
         x, y = int(w * (i // ns)), int(h * (i % ns))  # block origin
         # mosaic[y : y + h, x : x + w, :] = images[i].transpose(1, 2, 0)
-        (G, B, D, R) = cv2.split(images[i])
+        channels = cv2.split(images[i].astype(np.uint8))
+        (G, B, R, D) = channels
         merged = cv2.merge([R, G, B])
         mosaic[y:y + h, x:x + w, :] = merged
 
