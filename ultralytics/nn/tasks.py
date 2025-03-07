@@ -316,7 +316,6 @@ class DetectionModel(BaseModel):
         # Define model
         ch = 4# self.yaml["ch"] = self.yaml.get("ch", ch)  # input channels
         self.yaml["ch"] = 4
-        LOGGER.info(f"the input channels depth is ... {ch}")
         if nc and nc != self.yaml["nc"]:
             LOGGER.info(f"Overriding model.yaml nc={self.yaml['nc']} with nc={nc}")
             self.yaml["nc"] = nc  # override YAML value
