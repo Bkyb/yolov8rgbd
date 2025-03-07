@@ -461,18 +461,19 @@ class ClassificationDataset:
 
     def __getitem__(self, i):
         """Returns subset of data and targets corresponding to given indices."""
-        f, j, fn, im = self.samples[i]  # filename, index, filename.with_suffix('.npy'), image
-        if self.cache_ram:
-            if im is None:  # Warning: two separate if statements required here, do not combine this with previous line
-                im = self.samples[i][3] = cv2.imread(f)
+        f, j, fn, im = self.samples[i] # filename, index, filename.with_suffix('.npy'), image
+        if self.cache_ram and im is None:
+            im = self.samples[i][3] = cv2.imread(f, cv2.IMREAD_UNCHANGED)
         elif self.cache_disk:
-            if not fn.exists():  # load npy
-                np.save(fn.as_posix(), cv2.imread(f), allow_pickle=False)
+            if not fn.exists(): # load npy
+                np.save(fn.as_posix(), cv2.imread(f, cv2.IMREAD_UNCHANGED), allow_pickle=False)
             im = np.load(fn)
-        else:  # read image
-            im = cv2.imread(f)  # BGR
+        else: # read image
+            im = cv2.imread(f, cv2.IMREAD_UNCHANGED) # BGR
         # Convert NumPy array to PIL image
-        im = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
+        #im = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))
+        im = Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGRA2RGBA))
+        
         sample = self.torch_transforms(im)
         return {"img": sample, "cls": j}
 
