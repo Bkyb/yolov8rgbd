@@ -509,7 +509,7 @@ def convert_dota_to_yolo_obb(dota_root_path: str):
             if image_path.suffix != ".png":
                 continue
             image_name_without_ext = image_path.stem
-            img = cv2.imread(str(image_path))
+            img = cv2.imread(str(image_path), cv2.IMREAD_UNCHANGED)
             h, w = img.shape[:2]
             convert_label(image_name_without_ext, w, h, orig_label_dir, save_dir)
 
