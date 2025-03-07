@@ -150,7 +150,7 @@ class BaseDataset(Dataset):
 
     def load_image(self, i, rect_mode=True):
         """Loads 1 image from dataset index 'i', returns (im, resized hw)."""
-        use_rgbd = True # changing here
+        use_rgbd = False # changing here
         im, f, fn = self.ims[i], self.im_files[i], self.npy_files[i]
         if im is None:  # not cached in RAM
             if fn.exists():  # load npy
@@ -167,7 +167,7 @@ class BaseDataset(Dataset):
                     b, g, r = cv2.split(im_brg)
                     im = cv2.merge((b, g, r, im_depth))
                 else:
-                    im = cv2.imread(f)  # BGR
+                    im = cv2.imread(f, cv2.IMREAD_UNCHANGED)  # BGR
             if im is None:
                 raise FileNotFoundError(f"Image Not Found {f}")
 
