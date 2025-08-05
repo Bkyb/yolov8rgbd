@@ -65,6 +65,8 @@ from ultralytics.nn.modules import (
     v10Detect,
     SilenceChannel,
     Gif,
+    TimmBackbone,
+    SelectFeature,
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
@@ -1082,6 +1084,9 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             args[0] = c2
         elif m is SilenceChannel:
             c2 = args[1] - args[0]
+        elif m is SelectFeature:
+            #index = args[1]
+            c2 = args[1]  # ch
         else:
             c2 = ch[f]
 
