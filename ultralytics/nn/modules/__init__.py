@@ -75,6 +75,8 @@ from .conv import (
     RepConv,
     SpatialAttention,
     SilenceChannel,
+    TimmBackbone,
+    SelectFeature,
 )
 from .head import OBB, Classify, Detect, Pose, RTDETRDecoder, Segment, WorldDetect, v10Detect
 from .transformer import (
@@ -165,6 +167,8 @@ __all__ = (
     "TorchVision",
     "Index",
     "A2C2f",
-    "SilenceChannel"
-    "Gif"
+    "SilenceChannel",
+    "Gif",
+    "TimmBackbone",
+    "SelectFeature",
 )
