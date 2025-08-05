@@ -26,6 +26,8 @@ __all__ = (
     "RepConv",
     "Index",
     "SilenceChannel",
+    "TimmBackbone",
+    "SelectFeature".
 )
 
 
@@ -47,6 +49,14 @@ class TimmBackbone(nn.Module):
     def forward(self, x):
         feats = self.model(x)  # list of tensors
         return feats  # 
+
+class SelectFeature(nn.Module):
+    def __init__(self, index, c_out):
+        super().__init__()
+        self.index = index
+
+    def forward(self, x):
+        return x[self.index]
 
 class Conv(nn.Module):
     """Standard convolution with args(ch_in, ch_out, kernel, stride, padding, groups, dilation, activation)."""
