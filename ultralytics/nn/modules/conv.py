@@ -27,7 +27,7 @@ __all__ = (
     "Index",
     "SilenceChannel",
     "TimmBackbone",
-    "SelectFeature".
+    "SelectFeature",
 )
 
 
@@ -39,24 +39,6 @@ def autopad(k, p=None, d=1):  # kernel, padding, dilation
         p = k // 2 if isinstance(k, int) else [x // 2 for x in k]  # auto-pad
     return p
 
-class TimmBackbone(nn.Module):
-    def __init__(self, model_name='efficientnetv2_rw_t', pretrained=True, out_indices=(2, 3, 4)):
-        super().__init__()
-        self.model = timm.create_model(
-            model_name, features_only=True, out_indices=out_indices, pretrained=pretrained
-        )
-
-    def forward(self, x):
-        feats = self.model(x)  # list of tensors
-        return feats  # 
-
-class SelectFeature(nn.Module):
-    def __init__(self, index, c_out):
-        super().__init__()
-        self.index = index
-
-    def forward(self, x):
-        return x[self.index]
 
 class Conv(nn.Module):
     """Standard convolution with args(ch_in, ch_out, kernel, stride, padding, groups, dilation, activation)."""
@@ -380,3 +362,22 @@ class SilenceChannel(nn.Module):
         self.c_end = c_end
     def forward(self, x):
         return x[...,self.c_start:self.c_end, :,:]
+
+class TimmBackbone(nn.Module):
+    def __init__(self, model_name='efficientnetv2_rw_t', pretrained=True, out_indices=(2, 3, 4)):
+        super().__init__()
+        self.model = timm.create_model(
+            model_name, features_only=True, out_indices=out_indices, pretrained=pretrained
+        )
+
+    def forward(self, x):
+        feats = self.model(x)  # list of tensors
+        return feats  # 
+
+class SelectFeature(nn.Module):
+    def __init__(self, index, c_out):
+        super().__init__()
+        self.index = index
+
+    def forward(self, x):
+        return x[self.index]
