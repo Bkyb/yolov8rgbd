@@ -7,6 +7,9 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+import timm
+
+
 __all__ = (
     "Conv",
     "Conv2",
@@ -34,6 +37,16 @@ def autopad(k, p=None, d=1):  # kernel, padding, dilation
         p = k // 2 if isinstance(k, int) else [x // 2 for x in k]  # auto-pad
     return p
 
+class TimmBackbone(nn.Module):
+    def __init__(self, model_name='efficientnetv2_rw_t', pretrained=True, out_indices=(2, 3, 4)):
+        super().__init__()
+        self.model = timm.create_model(
+            model_name, features_only=True, out_indices=out_indices, pretrained=pretrained
+        )
+
+    def forward(self, x):
+        feats = self.model(x)  # list of tensors
+        return feats  # 
 
 class Conv(nn.Module):
     """Standard convolution with args(ch_in, ch_out, kernel, stride, padding, groups, dilation, activation)."""
