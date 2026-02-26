@@ -1,0 +1,53 @@
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
+# Ultralytics YOLO11-pose keypoints/pose estimation model with P3/8 - P5/32 outputs
+# Model docs: https://docs.ultralytics.com/models/yolo11
+# Task docs: https://docs.ultralytics.com/tasks/pose
+
+# Parameters
+nc: 80 # number of classes
+kpt_shape: [9, 3] # number of keypoints, number of dims (2 for x,y or 3 for x,y,visible)
+scales: # model compound scaling constants, i.e. 'model=yolo11n-pose.yaml' will call yolo11.yaml with scale 'n'
+  # [depth, width, max_channels]
+
+
+# YOLO11n backbone
+# scales:
+#   ...
+#   # P3(64), P4(96), P5(960) 채널에 맞게 정의
+#   mnv4s: [1.0, 1.0, [64, 96, 960]] 
+
+backbone:
+  # 1. 백본 (out_indices=[2, 3, 4] -> P3, P4, P5 반환)
+  - [-1, 1, TimmBackbone, ['mobilenetv4_conv_small', True, [2, 3, 4]]]  # 0번
+
+  # 2. SelectFeature로 P3, P4, P5 피처맵 분리
+  - [0, 1, SelectFeature, [0, 64]]   # 1번 (P3/8, 64ch)
+  - [0, 1, SelectFeature, [1, 96]]   # 2번 (P4/16, 96ch)
+  - [0, 1, SelectFeature, [2, 960]]  # 3번 (P5/32, 960ch)
+  - [-1, 1, Conv, [256, 1, 1]]      # 4번 (P5-reduced, 256ch)
+
+  # 3. P5 피처맵에 SPPF, C2PSA 적용
+  - [-1, 1, SPPF, [256, 5]]         # 5번 (from 4)
+
+head:                         
+  # 3. PANet (Top-down)
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']] # 6 (from 6, P5 최종)
+  - [[-1, 2], 1, Concat, [1]]  # 7 <- P4(2번)와 Concat
+  - [-1, 2, C2f, [96]] # 8 (P4-neck, 96ch) 
+
+  - [-1, 1, nn.Upsample, [None, 2, 'nearest']] # 9 (from 9)
+  - [[-1, 1], 1, Concat, [1]]  # 0 <- P3(1번)와 Concat
+  - [-1, 2, C2f, [64]] # 11 (P3-small, 64ch)
+
+  # 4. PANet (Bottom-up)
+  - [-1, 1, Conv, [64, 3, 2]] # 12 (from 12)
+  - [[-1, 8], 1, Concat, [1]]  # 13 <- P4-neck(8번)와 Concat
+  - [-1, 2, C2f, [96]] # 14 (P4-medium, 96ch)
+
+  - [-1, 1, Conv, [96, 3, 2]] # 15 (from 15)
+  - [[-1, 5], 1, Concat, [1]]  # 16 <- P5 최종(5번)와 Concat
+  - [-1, 2, C2f, [256]] # 17 (P5-large, 256ch)
+
+  # 5. Pose Head
+  - [[11, 14, 17], 1, Pose, [nc, kpt_shape]] # Detect(P3, P4, P5)

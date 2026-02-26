@@ -6,7 +6,8 @@
 # 544 layers, 2128720 parameters, 8.5 GFLOPs
 
 # Parameters
-nc: 80 # number of classes
+nc: 1 # number of classes
+kpt_shape: [9, 3]
 
 # GELAN backbone
 backbone:
@@ -38,4 +39,4 @@ head:
   - [[-1, 9], 1, Concat, [1]] # cat head P5
   - [-1, 1, RepNCSPELAN4, [128, 128, 64, 3]] # 21 (P5/32-large)
 
-  - [[15, 18, 21], 1, Detect, [nc]] # Detect(P3, P4, P5)
+  - [[15, 18, 21], 1, Pose, [nc, kpt_shape]] # Detect(P3, P4, P5)
